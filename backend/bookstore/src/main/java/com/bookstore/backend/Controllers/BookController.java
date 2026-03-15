@@ -24,13 +24,13 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping
+    @GetMapping("/get")
     @Operation(summary = "Get all books list", description = "Method returns a list of all books in the database")
     public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(bookService.getAllBooks());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     @Operation(summary = "Get book by ID", description = "Method returns a specific book by its ID")
     public ResponseEntity<Book> getBookById(@PathVariable Integer id) {
         return bookService.getBookById(id)
@@ -38,13 +38,13 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @Operation(summary = "Add new book", description = "Method creates a new book in the database")
     public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addBook(book));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @Operation(summary = "Update book", description = "Method updates an existing book by ID")
     public ResponseEntity<Book> updateBook(@PathVariable Integer id, @Valid @RequestBody Book updatedBook) {
         return bookService.updateBook(id, updatedBook)
@@ -52,7 +52,7 @@ public class BookController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Delete book", description = "Method deletes a specific book by its ID")
     public ResponseEntity<Book> deleteBook(@PathVariable Integer id) {
         if (bookService.deleteBook(id)) {
