@@ -45,4 +45,8 @@ public class Book {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Min(0)
+    @Column(name = "stock_quantity")
+    private Integer stockQuantity;
 }

@@ -13,7 +13,8 @@ JSON body example
   "description": "Bilbo Baggins goes on an unexpected journey",
   "publicationYear": 1937,
   "price": 15.99,
-  "genre": "Fantasy"
+  "genre": "Fantasy",
+  "stockQuantity": 13
 }
 
 
@@ -26,7 +27,8 @@ JSON body example
   "description": "Bilbo Baggins goes on an unexpected journey",
   "publicationYear": 1937,
   "price": 12.99,
-  "genre": "Fantasy"
+  "genre": "Fantasy",
+  "stockQuantity": 3
 }
 
 // Delete book
