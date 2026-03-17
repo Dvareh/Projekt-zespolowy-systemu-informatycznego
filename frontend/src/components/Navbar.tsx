@@ -1,5 +1,6 @@
 'use client';
 
+import { getBooks } from '@/api';
 import styled from 'styled-components';
 
 const Nav = styled.nav`
@@ -67,7 +68,7 @@ export default function Navbar() {
       <NavLinks>
         <NavLink href="#">Katalog</NavLink>
         <NavLink href="#">Zaloguj</NavLink>
-        <RegisterButton>Rejestracja</RegisterButton>
+        <RegisterButton onClick={()=>console.log(getBooks())}>Rejestracja</RegisterButton>
       </NavLinks>
     </NavInner>
   </Nav>
