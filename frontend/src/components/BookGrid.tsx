@@ -1,7 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BookCard from './BookCard';
+import { getBooks } from '@/api';
+
 
 const Wrapper = styled.div`
   flex: 1;
@@ -60,22 +63,37 @@ const Grid = styled.div`
   }
 `;
 
-const mockBooks = [
-  { id: 1, title: '7 nawyków skutecznego...', author: 'Stephen Covey', price: 710 },
-  { id: 2, title: 'Alicja w Krainie Czarów', author: 'Lewis Carroll', price: 520 },
-  { id: 3, title: 'Anna Karenina', author: 'Lew Tołstoj', price: 950 },
-  { id: 4, title: 'Bogaty ojciec, biedny ojciec', author: 'Robert Kiyosaki', price: 590 },
-  { id: 5, title: 'Harry Potter i Kamień...', author: 'J.K. Rowling', price: 680 },
-  { id: 6, title: 'Twisted Lies', author: 'Ana Huang', price: 420 },
-  { id: 7, title: 'Zbrodnia i kara', author: 'Fiodor Dostojewski', price: 490 },
-  { id: 8, title: 'Mały Książę', author: 'Antoine de Saint-Exupéry', price: 310 },
-];
+const Loading = styled.p`
+  font-size: 14px;
+  color: #9a8a7a;
+`;
+
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  price: number;
+}
 
 export default function BookGrid() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getBooks(0, 12)
+      .then((data) => {
+        setBooks(data.content);
+        setTotal(data.totalElements);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <Wrapper>
       <TopBar>
-        <Count>Znaleziono {mockBooks.length} książek</Count>
+        <Count>Znaleziono {total} książek</Count>
         <SortRow>
           <SortLabel>Sortuj:</SortLabel>
           <SortSelect>
@@ -86,16 +104,20 @@ export default function BookGrid() {
         </SortRow>
       </TopBar>
 
-      <Grid>
-        {mockBooks.map((book) => (
-          <BookCard
-            key={book.id}
-            title={book.title}
-            author={book.author}
-            price={book.price}
-          />
-        ))}
-      </Grid>
+      {loading ? (
+        <Loading>Ładowanie...</Loading>
+      ) : (
+        <Grid>
+          {books.map((book) => (
+            <BookCard
+              key={book.id}
+              title={book.title}
+              author={book.author}
+              price={book.price}
+            />
+          ))}
+        </Grid>
+      )}
     </Wrapper>
   );
 }
