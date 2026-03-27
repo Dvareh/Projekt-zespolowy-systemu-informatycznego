@@ -23,9 +23,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "title", nullable = false,  length = 255)
     @NotBlank(message = "Title is required")
     private String title;
 
+    @Column(name = "author", nullable = false,  length = 255)
     @NotBlank(message = "Author is required")
     private String author;
 
@@ -36,17 +38,19 @@ public class Book {
     @Column(name = "publication_year")
     private Integer publicationYear;
 
+    @Column(name = "price", precision = 10, scale = 2)
     @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.0", message = "Price cannot be negative")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Price cannot be negative")
     private BigDecimal price;
 
+    @Column(name = "genre", length = 100)
     private String genre;
 
-    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Min(0)
-    @Column(name = "stock_quantity")
+    @Column(name = "stock_quantity", nullable = false)
+    @Min(value = 0, message = "Quantity cannot be negative")
     private Integer stockQuantity;
 }
