@@ -1,5 +1,6 @@
 package com.bookstore.backend.Services;
 
+import com.bookstore.backend.DTO.UserDTO;
 import com.bookstore.backend.Models.User;
 import com.bookstore.backend.Repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,14 @@ public class UserService {
 
                     return userRepository.save(existingUser);
                 });
+    }
+
+    public UserDTO mapToDTO(User user){
+        return UserDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
     }
 }
