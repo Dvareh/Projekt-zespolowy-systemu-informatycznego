@@ -41,7 +41,7 @@ public class BookService{
         return bookRepository.save(book);
     }
 
-    @Transactional
+    @Transactional()
     public Optional<Book> updateBook(Integer id, Book updatedBook) {
         return bookRepository.findById(id).map(existingBook -> {
             logger.info("Updating book with id {}", id);
@@ -58,6 +58,7 @@ public class BookService{
 
     @Transactional
     public Page<Book> getBooksByPages(Pageable pageable) {
+        logger.info("Getting books by pages {}", pageable.getSort());
         return bookRepository.findAll(pageable);
     }
 
