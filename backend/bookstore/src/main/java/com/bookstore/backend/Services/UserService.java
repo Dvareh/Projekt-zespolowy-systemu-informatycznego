@@ -1,8 +1,11 @@
 package com.bookstore.backend.Services;
 
+import com.bookstore.backend.DTO.UpdateRequestDTO;
 import com.bookstore.backend.DTO.UserDTO;
 import com.bookstore.backend.Models.User;
 import com.bookstore.backend.Repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,53 +15,61 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public User save(User user){
+        logger.info("Saving user {}", user.getId());
         return userRepository.save(user);
     }
 
     public Optional<User> findByEmail(String email){
+        logger.info("Finding user by email {}", email);
         return userRepository.findByEmail(email);
     }
 
     public Optional<User> findById(Integer id){
+        logger.info("Finding user by id {}", id);
         return userRepository.findById(id);
     }
 
     public List<User> findAll(){
+        logger.info("Finding all users");
         return userRepository.findAll();
     }
 
     public void deleteById(Integer id){
+        logger.info("Deleting user {}", id);
         userRepository.deleteById(id);
     }
 
-    public Optional<User> updateUser(Integer id, User updatedUser) {
+    public Optional<User> updateUser(Integer id, UpdateRequestDTO requestDTO) {
+        logger.info("Updating user {}", id);
         return userRepository.findById(id)
-                .map(existingUser -> {
+                .map(user -> {
 
-                    existingUser.setUsername(updatedUser.getUsername());
-                    existingUser.setEmail(updatedUser.getEmail());
-
-                    //temporary before BCrypt
-                    if (updatedUser.getPassword() != null) {
-                        existingUser.setPassword(updatedUser.getPassword());
+                    if (requestDTO.getUsername() != null) {
+                        user.setUsername(requestDTO.getUsername());
                     }
 
-                    //temporary before admin panel
-                    if (updatedUser.getRole() != null) {
-                        existingUser.setRole(updatedUser.getRole());
+                    if (requestDTO.getEmail() != null) {
+                        user.setEmail(requestDTO.getEmail());
                     }
 
-                    return userRepository.save(existingUser);
+                    // Temporary without bcrypt
+                    if (requestDTO.getPassword() != null) {
+                        user.setPassword(requestDTO.getPassword());
+                    }
+
+                    return userRepository.save(user);
                 });
     }
 
     public UserDTO mapToDTO(User user){
+        logger.info("Mapping user {}", user.getId());
         return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
