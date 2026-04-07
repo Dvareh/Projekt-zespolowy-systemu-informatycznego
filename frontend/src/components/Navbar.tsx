@@ -1,7 +1,7 @@
 'use client';
 
-import { getBooks } from '@/api';
 import styled from 'styled-components';
+
 
 const Nav = styled.nav`
   height: 64px;
@@ -44,7 +44,7 @@ const NavLink = styled.a`
   &:hover { color: #3d2f1e; }
 `;
 
-const RegisterButton = styled.button`
+const RegisterButton = styled.a`
   background: #7a6248;
   color: #fff;
   border: none;
@@ -54,6 +54,10 @@ const RegisterButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   &:hover { background: #5e4a36; }
 `;
 
@@ -66,9 +70,8 @@ export default function Navbar() {
         <span>Księgarnia</span>
       </Logo>
       <NavLinks>
-        <NavLink href="#">Katalog</NavLink>
-        <NavLink href="#">Zaloguj</NavLink>
-        <RegisterButton onClick={()=>console.log(getBooks())}>Rejestracja</RegisterButton>
+        <NavLink href="/login">Zaloguj</NavLink>
+        <RegisterButton href="/register">Rejestracja</RegisterButton>
       </NavLinks>
     </NavInner>
   </Nav>
