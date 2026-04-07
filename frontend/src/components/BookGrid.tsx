@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import BookCard from './BookCard';
-import { getBooks } from '@/api';
-
+import { useAppDispatch, useAppSelector } from '@/store';
+import { fetchBooks } from '@/store/slices/booksSlice';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -63,32 +63,18 @@ const Grid = styled.div`
   }
 `;
 
-const Loading = styled.p`
+const Message = styled.p`
   font-size: 14px;
   color: #9a8a7a;
 `;
 
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  price: number;
-}
-
 export default function BookGrid() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { items, total, status, error } = useAppSelector((s) => s.books);
 
   useEffect(() => {
-    getBooks(0, 12)
-      .then((data) => {
-        setBooks(data.content);
-        setTotal(data.totalElements);
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+    dispatch(fetchBooks({ page: 0, size: 12 }));
+  }, [dispatch]);
 
   return (
     <Wrapper>
@@ -104,11 +90,11 @@ export default function BookGrid() {
         </SortRow>
       </TopBar>
 
-      {loading ? (
-        <Loading>Ładowanie...</Loading>
-      ) : (
+      {status === 'loading' && <Message>Ładowanie...</Message>}
+      {status === 'failed' && <Message>Błąd: {error}</Message>}
+      {status === 'succeeded' && (
         <Grid>
-          {books.map((book) => (
+          {items.map((book) => (
             <BookCard
               key={book.id}
               title={book.title}

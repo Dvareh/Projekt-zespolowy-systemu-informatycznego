@@ -1,16 +1,12 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
-import { ProfileNavbar } from '@/components/Navbar'
-import { OrderCard } from '@/components/OrderCard'
 import Image from 'next/image'
-
-const mockUser = {
-  name: 'User',
-  email: 'test@gmail.com',
-  userId: '#17755546',
-  registeredAt: 'Marzec 2026',
-}
+import Navbar from '@/components/Navbar'
+import { OrderCard } from '@/components/OrderCard'
+import { useAppSelector } from '@/store'
 
 const userStats = {
   totalOrders: 0,
@@ -227,41 +223,37 @@ const EmptyOrders = styled.p`
   margin: 0;
 `
 
-const UpcomingList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`
-
-const UpcomingItem = styled.li`
-  font-size: 14px;
-  color: #7a7169;
+const LoadingWrapper = styled.div`
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  gap: 6px;
-  &::before {
-    content: '•';
-    color: #c8a96e;
-    font-size: 16px;
-    line-height: 1;
-  }
-`
-
-const UpcomingTitle = styled.h3`
+  justify-content: center;
+  background: #f4f1ec;
   font-family: 'Lato', sans-serif;
   font-size: 15px;
-  font-weight: 600;
-  color: #2c2c2c;
-  margin: 0 0 14px;
+  color: #9a9086;
 `
 
 export default function ProfilePage() {
+  const router = useRouter()
+  const { user, token, initializing } = useAppSelector((s) => s.auth)
+
+  useEffect(() => {
+    if (!initializing && !token) {
+      router.replace('/login')
+    }
+  }, [initializing, token, router])
+
+  if (initializing || !token) {
+    return <LoadingWrapper>Ładowanie...</LoadingWrapper>
+  }
+
+  const displayName = user?.username ?? '—'
+  const displayEmail = user?.email ?? '—'
+
   return (
     <PageWrapper>
-      <ProfileNavbar userName={mockUser.name} cartBadge={0} />
+      <Navbar />
 
       <Container>
         <PageTitle>Moje konto</PageTitle>
@@ -272,22 +264,22 @@ export default function ProfilePage() {
               <AvatarWrapper>
                 <Image src="/person.png" width={48} height={48} alt="avatar" />
               </AvatarWrapper>
-              <UserName>{mockUser.name}</UserName>
-              <UserEmail>{mockUser.email}</UserEmail>
+              <UserName>{displayName}</UserName>
+              <UserEmail>{displayEmail}</UserEmail>
               <Divider />
-              <MetaRow>
-                <MetaLabel>ID użytkownika:</MetaLabel>
-                <MetaValue>{mockUser.userId}</MetaValue>
-              </MetaRow>
-              <MetaRow>
-                <MetaLabel>Data rejestracji:</MetaLabel>
-                <MetaValue>{mockUser.registeredAt}</MetaValue>
-              </MetaRow>
-              <EditButton><Image src="/setting.png" width={15} height={15} alt="avatar" /> Edytuj profil</EditButton>
+              {user?.id && (
+                <MetaRow>
+                  <MetaLabel>ID użytkownika:</MetaLabel>
+                  <MetaValue>#{user.id}</MetaValue>
+                </MetaRow>
+              )}
+              <EditButton>
+                <Image src="/setting.png" width={15} height={15} alt="settings" />
+                Edytuj profil
+              </EditButton>
             </Card>
 
             <Card>
-              <StatsTitle>Statystyki</StatsTitle>
               <StatsGrid>
                 <StatItem>
                   <StatLabel>Zamówienia</StatLabel>
@@ -311,7 +303,7 @@ export default function ProfilePage() {
             <SectionCard>
               <SectionHeader>
                 <SectionTitle>Historia zamówień</SectionTitle>
-                <ContinueLink href="/katalog">Kontynuuj zakupy</ContinueLink>
+                <ContinueLink href="/">Kontynuuj zakupy</ContinueLink>
               </SectionHeader>
 
               <OrdersList>
