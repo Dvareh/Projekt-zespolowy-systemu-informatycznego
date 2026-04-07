@@ -1,7 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { logout } from '@/store/slices/authSlice';
 
 const Nav = styled.nav`
   height: 64px;
@@ -19,7 +22,7 @@ const NavInner = styled.div`
   height: 100%;
 `;
 
-const Logo = styled.div`
+const Logo = styled.a`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -61,47 +64,11 @@ const RegisterButton = styled.a`
   &:hover { background: #5e4a36; }
 `;
 
-const ProfileNav = styled.nav`
-  background: #ffffff;
-  border-bottom: 1px solid #e8e4de;
-  padding: 0 40px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ProfileLogo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Lora', Georgia, serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: #2c2c2c;
-  cursor: pointer;
-`;
-
-const NavRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 24px;
-`;
-
-const ProfileNavLink = styled.span`
-  font-size: 14px;
-  color: #5a5249;
-  cursor: pointer;
-  transition: color 0.15s;
-  &:hover { color: #2c2c2c; }
-`;
-
 const CartBtn = styled.button`
   position: relative;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
   color: #5a5249;
   padding: 0;
 `;
@@ -122,13 +89,14 @@ const CartBadge = styled.span`
   justify-content: center;
 `;
 
-const UserChip = styled.div`
+const UserChipLink = styled.a`
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
   color: #5a5249;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 const LogoutBtn = styled.button`
@@ -141,42 +109,45 @@ const LogoutBtn = styled.button`
 `;
 
 export default function Navbar() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { token, user, initializing } = useAppSelector((s) => s.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push('/');
+  };
+
   return (
     <Nav>
       <NavInner>
-        <Logo>
+        <Logo href="/">
           <span>📖</span>
           <span>Księgarnia</span>
         </Logo>
         <NavLinks>
-          <NavLink href="/login">Zaloguj</NavLink>
-          <RegisterButton href="/register">Rejestracja</RegisterButton>
+          {!initializing && token ? (
+            <>
+              <CartBtn>
+                <Image src="/shopping-bag.png" width={22} height={22} alt="cart" />
+                <CartBadge>0</CartBadge>
+              </CartBtn>
+              <UserChipLink href="/profile">
+                <Image src="/person.png" width={20} height={20} alt="avatar" />
+                {user?.username ?? ''}
+              </UserChipLink>
+              <LogoutBtn title="Wyloguj" onClick={handleLogout}>
+                <Image src="/logout.png" width={18} height={18} alt="logout" />
+              </LogoutBtn>
+            </>
+          ) : (
+            <>
+              <NavLink href="/login">Zaloguj</NavLink>
+              <RegisterButton href="/register">Rejestracja</RegisterButton>
+            </>
+          )}
         </NavLinks>
       </NavInner>
     </Nav>
-  );
-}
-
-interface ProfileNavbarProps {
-  userName: string;
-  cartBadge: number;
-}
-
-export function ProfileNavbar({ userName, cartBadge = 0 }: ProfileNavbarProps) {
-  return (
-    <ProfileNav>
-      <ProfileLogo>📖 Księgarnia</ProfileLogo>
-      <NavRight>
-        <CartBtn>
-          <Image src="/shopping-bag.png" width={24} height={24} alt="cart" />
-          <CartBadge>{cartBadge}</CartBadge>
-        </CartBtn>
-        <UserChip>
-          <Image src="/person.png" width={20} height={20} alt="avatar" />
-          {userName}
-        </UserChip>
-        <LogoutBtn title="Wyloguj"><Image src="/logout.png" width={18} height={18} alt="avatar" /></LogoutBtn>
-      </NavRight>
-    </ProfileNav>
   );
 }
