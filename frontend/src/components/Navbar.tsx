@@ -1,7 +1,7 @@
 'use client';
 
+import Image from 'next/image';
 import styled from 'styled-components';
-
 
 const Nav = styled.nav`
   height: 64px;
@@ -61,19 +61,122 @@ const RegisterButton = styled.a`
   &:hover { background: #5e4a36; }
 `;
 
+const ProfileNav = styled.nav`
+  background: #ffffff;
+  border-bottom: 1px solid #e8e4de;
+  padding: 0 40px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ProfileLogo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c2c2c;
+  cursor: pointer;
+`;
+
+const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+`;
+
+const ProfileNavLink = styled.span`
+  font-size: 14px;
+  color: #5a5249;
+  cursor: pointer;
+  transition: color 0.15s;
+  &:hover { color: #2c2c2c; }
+`;
+
+const CartBtn = styled.button`
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #5a5249;
+  padding: 0;
+`;
+
+const CartBadge = styled.span`
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #c8a96e;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const UserChip = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #5a5249;
+  cursor: pointer;
+`;
+
+const LogoutBtn = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #9a9086;
+  &:hover { color: #2c2c2c; }
+`;
+
 export default function Navbar() {
   return (
-  <Nav>
-    <NavInner>
-      <Logo>
-        <span>📖</span>
-        <span>Księgarnia</span>
-      </Logo>
-      <NavLinks>
-        <NavLink href="/login">Zaloguj</NavLink>
-        <RegisterButton href="/register">Rejestracja</RegisterButton>
-      </NavLinks>
-    </NavInner>
-  </Nav>
-);
+    <Nav>
+      <NavInner>
+        <Logo>
+          <span>📖</span>
+          <span>Księgarnia</span>
+        </Logo>
+        <NavLinks>
+          <NavLink href="/login">Zaloguj</NavLink>
+          <RegisterButton href="/register">Rejestracja</RegisterButton>
+        </NavLinks>
+      </NavInner>
+    </Nav>
+  );
+}
+
+interface ProfileNavbarProps {
+  userName: string;
+  cartBadge: number;
+}
+
+export function ProfileNavbar({ userName, cartBadge = 0 }: ProfileNavbarProps) {
+  return (
+    <ProfileNav>
+      <ProfileLogo>📖 Księgarnia</ProfileLogo>
+      <NavRight>
+        <CartBtn>
+          <Image src="/shopping-bag.png" width={24} height={24} alt="cart" />
+          <CartBadge>{cartBadge}</CartBadge>
+        </CartBtn>
+        <UserChip>
+          <Image src="/person.png" width={20} height={20} alt="avatar" />
+          {userName}
+        </UserChip>
+        <LogoutBtn title="Wyloguj"><Image src="/logout.png" width={18} height={18} alt="avatar" /></LogoutBtn>
+      </NavRight>
+    </ProfileNav>
+  );
 }
