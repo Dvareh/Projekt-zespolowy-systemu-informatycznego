@@ -7,7 +7,7 @@ import {
   AuthPage,
   PageWrapper,
   BackLink,
-} from '../../components/Authlayout'
+} from '@/components/Authlayout'
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
