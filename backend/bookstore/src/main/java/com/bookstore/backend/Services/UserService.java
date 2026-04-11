@@ -74,9 +74,8 @@ public class UserService {
                         user.setEmail(requestDTO.getEmail());
                     }
 
-                    // Temporary without bcrypt
                     if (requestDTO.getPassword() != null) {
-                        user.setPassword(requestDTO.getPassword());
+                        user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
                     }
 
                     return userRepository.save(user);
