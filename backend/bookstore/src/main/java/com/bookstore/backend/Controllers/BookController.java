@@ -1,6 +1,8 @@
 package com.bookstore.backend.Controllers;
 
 
+import com.bookstore.backend.DTO.BookRequestDTO;
+import com.bookstore.backend.DTO.BookResponseDTO;
 import com.bookstore.backend.Models.Book;
 import com.bookstore.backend.Services.BookService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,14 +55,14 @@ public class BookController {
 
     @PostMapping("/add")
     @Operation(summary = "Add new book", description = "Method creates a new book in the database")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addBook(book));
+    public ResponseEntity<BookResponseDTO> create(@RequestBody BookRequestDTO request) {
+        return ResponseEntity.ok(bookService.createBook(request));
     }
 
     @PutMapping("/update/{id}")
     @Operation(summary = "Update book", description = "Method updates an existing book by ID")
-    public ResponseEntity<Book> updateBook(@PathVariable Integer id, @Valid @RequestBody Book updatedBook) {
-        return bookService.updateBook(id, updatedBook)
+    public ResponseEntity<BookResponseDTO> updateBook(@PathVariable Integer id, @RequestBody BookRequestDTO bookRequestDTO) {
+        return bookService.update(id, bookRequestDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
