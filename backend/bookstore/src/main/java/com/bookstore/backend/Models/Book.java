@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -31,6 +32,9 @@ public class Book {
     @NotBlank(message = "Author is required")
     private String author;
 
+    @Column(name = "cover_url")
+    private String coverUrl;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -43,8 +47,6 @@ public class Book {
     @DecimalMin(value = "0.0", inclusive = true, message = "Price cannot be negative")
     private BigDecimal price;
 
-    @Column(name = "genre", length = 100)
-    private String genre;
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
@@ -53,4 +55,13 @@ public class Book {
     @Column(name = "stock_quantity", nullable = false)
     @Min(value = 0, message = "Quantity cannot be negative")
     private Integer stockQuantity;
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_genres",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres;
+
 }
