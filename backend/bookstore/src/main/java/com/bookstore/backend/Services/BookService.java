@@ -2,15 +2,18 @@ package com.bookstore.backend.Services;
 
 import com.bookstore.backend.DTO.BookRequestDTO;
 import com.bookstore.backend.DTO.BookResponseDTO;
+import com.bookstore.backend.DTO.BookSearchRequestDTO;
 import com.bookstore.backend.Models.Book;
 import com.bookstore.backend.Models.Genre;
 import com.bookstore.backend.Repositories.BookRepository;
 import com.bookstore.backend.Repositories.GenreRepository;
+import com.bookstore.backend.Specifications.BookSpecification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,15 +31,9 @@ public class BookService{
     private final GenreRepository genreRepository;
 
 
-
-    public List<Book> getAllBooks(){
-        logger.info("Getting all books");
-        return bookRepository.findAll();
-    }
-
-    public Optional<Book> getBookById(Integer id){
+    public Optional<BookResponseDTO> getBookById(Integer id){
         logger.info("Getting book by id {}", id);
-        return bookRepository.findById(id);
+        return bookRepository.findById(id).map(this::mapToDTO);
     }
 
     public BookResponseDTO createBook(BookRequestDTO dto) {
@@ -93,11 +90,6 @@ public class BookService{
         });
     }
 
-    @Transactional
-    public Page<Book> getBooksByPages(Pageable pageable) {
-        logger.info("Getting books by pages {}", pageable.getSort());
-        return bookRepository.findAll(pageable);
-    }
 
     @Transactional
     public boolean deleteBook(Integer id) {
@@ -108,6 +100,16 @@ public class BookService{
         }
         logger.warn("Attempted to delete non-existing book with id {}", id);
         return false;
+    }
+
+    public Page<BookResponseDTO> searchBooks(BookSearchRequestDTO bookSearchRequestDTO, Pageable pageable) {
+        Specification<Book> spec = Specification
+                .where(BookSpecification.hasTitle(bookSearchRequestDTO.getTitle()))
+                .and(BookSpecification.hasAuthor(bookSearchRequestDTO.getAuthor()))
+                .and(BookSpecification.hasGenre(bookSearchRequestDTO.getGenreId()));
+
+        return bookRepository.findAll(spec, pageable)
+                .map(this::mapToDTO);
     }
 
     public BookResponseDTO mapToDTO(Book book) {

@@ -3,6 +3,7 @@ package com.bookstore.backend.Controllers;
 
 import com.bookstore.backend.DTO.BookRequestDTO;
 import com.bookstore.backend.DTO.BookResponseDTO;
+import com.bookstore.backend.DTO.BookSearchRequestDTO;
 import com.bookstore.backend.Models.Book;
 import com.bookstore.backend.Services.BookService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,29 +31,15 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/get")
-    @Operation(summary = "Get all books list", description = "Method returns a list of all books in the database")
-    public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
-    }
 
     @GetMapping("/get/{id}")
     @Operation(summary = "Get book by ID", description = "Method returns a specific book by its ID")
-    public ResponseEntity<Book> getBookById(@PathVariable Integer id) {
+    public ResponseEntity<BookResponseDTO> getBookById(@PathVariable Integer id) {
         return bookService.getBookById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/get/page")
-    @Operation(summary = "Get paginated books", description = "Method returns a paginated list of books")
-    public ResponseEntity<Page<Book>> getPaginatedBooks(@RequestParam(defaultValue = "0") int page,
-                                                        @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Book> booksPage = bookService.getBooksByPages(pageable);
-        return ResponseEntity.ok(booksPage);
-
-    }
 
     @PostMapping("/add")
     @Operation(summary = "Add new book", description = "Method creates a new book in the database")
@@ -71,10 +59,27 @@ public class BookController {
     @Operation(summary = "Delete book", description = "Method deletes a specific book by its ID")
     public ResponseEntity<Book> deleteBook(@PathVariable Integer id) {
         if (bookService.deleteBook(id)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Flexible book search request")
+    public ResponseEntity<Page<BookResponseDTO>> searchBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) Integer genreId,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
+    ) {
+
+        BookSearchRequestDTO requestDTO = new BookSearchRequestDTO();
+        requestDTO.setTitle(title);
+        requestDTO.setAuthor(author);
+        requestDTO.setGenreId(genreId);
+
+        return ResponseEntity.ok(bookService.searchBooks(requestDTO, pageable));
     }
 
 }
