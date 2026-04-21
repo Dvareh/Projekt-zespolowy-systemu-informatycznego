@@ -44,7 +44,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/books/**").hasRole("ADMIN")
+                        .requestMatchers("/books/**").permitAll()
+                        .requestMatchers("/books/update/{id}").hasRole("ADMIN")
+                        .requestMatchers("/books/delete/{id}").hasRole("ADMIN")
+                        .requestMatchers("/books/add").hasRole("ADMIN")
                         .requestMatchers("/genres/**").hasRole("ADMIN")
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/user/me/**").authenticated()
