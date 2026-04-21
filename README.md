@@ -115,9 +115,6 @@
     	Combine filters (search endpoint)
     	Sorting books
     
-    External API Integration (Open Library):
-    	Fetch book cover images
-    	Store cover URL in coverUrl
   #### Frontend:
     Tworzenie stron:
         BookDetailsPage  
@@ -312,9 +309,6 @@
         Wyszukiwanie książek (po title i author)
         Możliwość łączenia filtrów (search endpoint)
         Sortowanie książek
-    Integracja z API (Open Library):
-        Pobieranie okładek książek  
-        Zapisywanie URL w polu coverUrl 
   #### Frontend:
     Tworzenie stron:
         BookDetailsPage  
