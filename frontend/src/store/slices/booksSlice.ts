@@ -7,8 +7,12 @@ export interface Book {
   author: string;
   price: number;
   description?: string;
-  genre?: string;
+  genres?: string[];
+  genreIds?: number[];
   publicationYear?: number;
+  coverUrl?: string;
+  isbn?: string;
+  stockQuantity?: number;
 }
 
 interface BooksState {

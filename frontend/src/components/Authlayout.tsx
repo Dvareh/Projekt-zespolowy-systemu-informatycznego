@@ -1,7 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Lato:wght@300;400;600&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #f4f1ec; }
 `

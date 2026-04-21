@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 
 const Card = styled.div`
@@ -18,6 +20,18 @@ const ImagePlaceholder = styled.div`
   width: 100%;
   aspect-ratio: 3 / 4;
   background: #ede8e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b0a090;
+  font-size: 13px;
+`;
+
+const CoverImg = styled.img`
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
 `;
 
 const Info = styled.div`
@@ -37,7 +51,14 @@ const BookTitle = styled.h4`
 const Author = styled.p`
   font-size: 13px;
   color: #9a8a7a;
+  margin: 0 0 4px 0;
+`;
+
+const Genre = styled.p`
+  font-size: 12px;
+  color: #b0a090;
   margin: 0 0 10px 0;
+  font-style: italic;
 `;
 
 const Bottom = styled.div`
@@ -72,23 +93,43 @@ const CartButton = styled.button`
 `;
 
 interface Props {
+  id?: number;
   title: string;
   author: string;
   price: number;
+  genres?: string[];
+  coverUrl?: string;
 }
 
-export default function BookCard({ title, author, price }: Props) {
-  return (
+export default function BookCard({ id, title, author, price, genres, coverUrl }: Props) {
+  const [imgFailed, setImgFailed] = useState(false);
+
+  const content = (
     <Card>
-      <ImagePlaceholder />
+      {coverUrl && !imgFailed ? (
+        <CoverImg src={coverUrl} alt={title} onError={() => setImgFailed(true)} />
+      ) : (
+        <ImagePlaceholder>Brak okładki</ImagePlaceholder>
+      )}
       <Info>
         <BookTitle>{title}</BookTitle>
         <Author>{author}</Author>
+        {genres && genres.length > 0 && <Genre>{genres.join(', ')}</Genre>}
         <Bottom>
           <Price>{price} zł</Price>
-          <CartButton>🛒</CartButton>
+          <CartButton onClick={(e) => e.preventDefault()}>🛒</CartButton>
         </Bottom>
       </Info>
     </Card>
   );
+
+  if (id !== undefined) {
+    return (
+      <Link href={`/books/${id}`} style={{ textDecoration: 'none', display: 'block' }}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
