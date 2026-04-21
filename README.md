@@ -106,12 +106,8 @@
             PUT /genres/update/{id}
             DELETE /genres/delete/{id}
     
-    Extend BookController with endpoints:
-            GET /books/get/title?value=&page=x&size=x
-            GET /books/get/author?value=&page=x&size=x
-            GET /books/get/genre/{id}?page=x&size=x
-            GET /books/get/search?title=x&author=x&genre=x&page=x&size=x
-            GET /books/get/page?page=x&size=x&sort=title,asc
+    Extend BookController with endpoint:
+            GET /books/search?sort=x,(desc,asc)&page=x&size=x
     
     Features:
     	Filter books by genre
