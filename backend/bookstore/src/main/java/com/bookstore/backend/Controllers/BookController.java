@@ -71,7 +71,7 @@ public class BookController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
             @RequestParam(required = false) Integer genreId,
-            @PageableDefault(size = 10, sort = "id") Pageable pageable
+            @PageableDefault(sort = "id") Pageable pageable
     ) {
 
         BookSearchRequestDTO requestDTO = new BookSearchRequestDTO();
