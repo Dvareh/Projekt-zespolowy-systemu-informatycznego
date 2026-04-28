@@ -23,6 +23,7 @@ export const searchBooks = async (params: {
   title?: string;
   author?: string;
   genreId?: number;
+  sort?: string;
   page?: number;
   size?: number;
 }) => {
@@ -30,6 +31,7 @@ export const searchBooks = async (params: {
   if (params.title) query.set('title', params.title);
   if (params.author) query.set('author', params.author);
   if (params.genreId !== undefined) query.set('genreId', String(params.genreId));
+  if (params.sort) query.set('sort', params.sort);
   query.set('page', String(params.page ?? 0));
   query.set('size', String(params.size ?? 10));
 

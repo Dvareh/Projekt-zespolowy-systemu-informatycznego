@@ -2,11 +2,6 @@
 
 import styled from 'styled-components';
 
-const categories = [
-  'Wszystkie', 'Klasyka', 'Fantastyka', 'Nauka',
-  'Historia', 'Romans', 'Kryminał', 'Biznes', 'Dziecięce',
-];
-
 const Wrapper = styled.div`
   background: #f5f0ea;
   padding: 16px 0;
@@ -37,20 +32,21 @@ const Tab = styled.button<{ $active?: boolean }>`
 `;
 
 interface Props {
+  categories: string[];
   active: string;
   onChange: (cat: string) => void;
 }
 
-export default function CategoryTabs({ active, onChange }: Props) {
+export default function CategoryTabs({ categories, active, onChange }: Props) {
   return (
-  <Wrapper>
-    <Inner>
-      {categories.map((cat) => (
-        <Tab key={cat} $active={active === cat} onClick={() => onChange(cat)}>
-          {cat}
-        </Tab>
-      ))}
-    </Inner>
-  </Wrapper>
-);
+    <Wrapper>
+      <Inner>
+        {categories.map((cat) => (
+          <Tab key={cat} $active={active === cat} onClick={() => onChange(cat)}>
+            {cat}
+          </Tab>
+        ))}
+      </Inner>
+    </Wrapper>
+  );
 }
