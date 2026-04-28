@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import CategoryTabs from './CategoryTabs';
 import FilterPanel from './FilterPanel';
 import BookCard from './BookCard';
 import { searchBooks, getGenres } from '@/api';
@@ -127,11 +126,6 @@ export default function CatalogClient() {
     return () => clearTimeout(t);
   }, [searchQuery]);
 
-  const categories = useMemo(
-    () => ['Wszystkie', ...genres.map((g) => g.name)],
-    [genres]
-  );
-
   const genreNames = useMemo(() => genres.map((g) => g.name), [genres]);
 
   const activeGenreId = useMemo<number | undefined>(() => {
@@ -187,23 +181,8 @@ export default function CatalogClient() {
     });
   }, [books, priceMin, priceMax, selectedYear, debouncedSearch, selectedGenres]);
 
-  const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
-    setSearchQuery('');
-    setDebouncedSearch('');
-    setPriceMin('');
-    setPriceMax('');
-    setSelectedYear(null);
-    setSelectedGenres([]);
-  };
-
   return (
     <>
-      <CategoryTabs
-        categories={categories}
-        active={activeCategory}
-        onChange={handleCategoryChange}
-      />
       <Content>
         <FilterPanel
           searchQuery={searchQuery}
