@@ -97,9 +97,12 @@ export default function BookGrid() {
           {items.map((book) => (
             <BookCard
               key={book.id}
+              id={book.id}
               title={book.title}
               author={book.author}
               price={book.price}
+              genres={book.genres}
+              coverUrl={book.coverUrl}
             />
           ))}
         </Grid>
