@@ -4,6 +4,7 @@ import com.bookstore.backend.DTO.UpdateRequestDTO;
 import com.bookstore.backend.DTO.UserDTO;
 import com.bookstore.backend.Models.User;
 import com.bookstore.backend.Repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,16 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public User save(User user){
         logger.info("Saving user {}", user.getId());
