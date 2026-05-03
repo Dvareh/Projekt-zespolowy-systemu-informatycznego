@@ -1,5 +1,7 @@
 package com.bookstore.backend.Services;
 
+import com.bookstore.backend.DTO.OrderItemDTO;
+import com.bookstore.backend.DTO.OrderResponseDTO;
 import com.bookstore.backend.DTO.OrderStatus;
 import com.bookstore.backend.Models.*;
 import com.bookstore.backend.Repositories.CartRepository;
@@ -102,5 +104,23 @@ public class OrderService {
         }
 
         return order;
+    }
+
+    public OrderResponseDTO mapToDTO(Order order) {
+        return OrderResponseDTO.builder()
+                .id(order.getId())
+                .status(order.getStatus().name())
+                .totalPrice(order.getTotalPrice())
+                .items(
+                        order.getItems().stream()
+                                .map(item -> OrderItemDTO.builder()
+                                        .bookId(item.getBook().getId())
+                                        .title(item.getBook().getTitle())
+                                        .quantity(item.getQuantity())
+                                        .priceAtPurchase(item.getPurchasePrice())
+                                        .build())
+                                .toList()
+                )
+                .build();
     }
 }

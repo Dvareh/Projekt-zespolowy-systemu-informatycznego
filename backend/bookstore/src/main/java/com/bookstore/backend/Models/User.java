@@ -1,5 +1,6 @@
 package com.bookstore.backend.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class User {
 
     @Column(name = "password", nullable = false, length = 255)
     @NotBlank(message = "Password is required")
+    @JsonIgnore
     private String password;
 
     @Column(name = "role", nullable = false, length = 20)

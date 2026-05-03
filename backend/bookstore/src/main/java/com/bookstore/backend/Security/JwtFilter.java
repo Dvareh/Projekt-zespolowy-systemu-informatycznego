@@ -38,6 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+
         String token = authHeader.substring(7);
         String email;
 
@@ -47,6 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT");
             return;
         }
+
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             userService.findByEmail(email).ifPresentOrElse(user -> {
