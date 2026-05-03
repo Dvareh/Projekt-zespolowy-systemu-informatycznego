@@ -1,5 +1,6 @@
 package com.bookstore.backend.Controllers;
 
+import com.bookstore.backend.DTO.CartResponseDTO;
 import com.bookstore.backend.Models.Cart;
 import com.bookstore.backend.Services.CartService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,25 +18,28 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/get")
-    public ResponseEntity<Cart> getCart(Authentication authentication){
-        return ResponseEntity.ok(cartService.getCart(authentication.getName()));
+    public ResponseEntity<CartResponseDTO> getCart(Authentication authentication){
+        return ResponseEntity.ok(
+                cartService.mapToDTO(cartService.getCart(authentication.getName())));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Cart> addToCart(Authentication authentication,
+    public ResponseEntity<CartResponseDTO> addToCart(Authentication authentication,
                                           @RequestParam Integer bookId,
                                           @RequestParam Integer quantity){
         return ResponseEntity.ok(
-                cartService.addItemToCart(authentication.getName(), bookId, quantity)
+                cartService.mapToDTO(
+                        cartService.addItemToCart(authentication.getName(), bookId, quantity))
         );
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Cart> updateItem(Authentication authentication,
+    public ResponseEntity<CartResponseDTO> updateItem(Authentication authentication,
                                            @RequestParam Integer itemId,
                                            @RequestParam Integer quantity){
         return ResponseEntity.ok(
-                cartService.updateItem(authentication.getName(), itemId, quantity)
+                cartService.mapToDTO(
+                        cartService.updateItem(authentication.getName(), itemId, quantity))
         );
     }
 

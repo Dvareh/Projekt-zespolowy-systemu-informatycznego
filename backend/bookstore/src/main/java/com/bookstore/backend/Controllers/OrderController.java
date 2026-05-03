@@ -1,5 +1,6 @@
 package com.bookstore.backend.Controllers;
 
+import com.bookstore.backend.DTO.OrderResponseDTO;
 import com.bookstore.backend.Models.Order;
 import com.bookstore.backend.Services.OrderService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,24 +20,30 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/add")
-    public ResponseEntity<Order> createOrder(Authentication authentication) {
+    public ResponseEntity<OrderResponseDTO> createOrder(Authentication authentication) {
         return ResponseEntity.ok(
-                orderService.createOrder(authentication.getName())
+                orderService.mapToDTO(
+                        orderService.createOrder(authentication.getName()))
         );
     }
 
     @GetMapping("/get")
-    public ResponseEntity<List<Order>> getOrders(Authentication authentication) {
+    public ResponseEntity<List<OrderResponseDTO>> getOrders(Authentication authentication) {
         return ResponseEntity.ok(
                 orderService.getOrders(authentication.getName())
+                        .stream()
+                        .map(orderService::mapToDTO)
+                        .toList()
         );
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Order> getOrder(Authentication authentication,
+    public ResponseEntity<OrderResponseDTO> getOrder(Authentication authentication,
                                           @PathVariable Integer id) {
         return ResponseEntity.ok(
-                orderService.getOrderById(authentication.getName(), id)
+                orderService.mapToDTO(
+                        orderService.getOrderById(authentication.getName(), id)
+                )
         );
     }
 }

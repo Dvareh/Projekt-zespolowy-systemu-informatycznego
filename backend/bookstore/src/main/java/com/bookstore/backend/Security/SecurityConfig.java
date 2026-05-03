@@ -44,15 +44,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/books/**").permitAll()
-                        .requestMatchers("/books/update/{id}").hasRole("ADMIN")
-                        .requestMatchers("/books/delete/{id}").hasRole("ADMIN")
-                        .requestMatchers("/books/add").hasRole("ADMIN")
-                        .requestMatchers("/genres/**").hasRole("ADMIN")
+
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/books/**").permitAll()
+
+                        .requestMatchers("/cart/**").authenticated()
+                        .requestMatchers("/orders/**").authenticated()
+
                         .requestMatchers("/user/me/**").authenticated()
                         .requestMatchers("/user/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/cart/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

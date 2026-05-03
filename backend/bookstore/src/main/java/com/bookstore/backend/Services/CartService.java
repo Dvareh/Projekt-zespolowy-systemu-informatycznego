@@ -1,5 +1,7 @@
 package com.bookstore.backend.Services;
 
+import com.bookstore.backend.DTO.CartItemDTO;
+import com.bookstore.backend.DTO.CartResponseDTO;
 import com.bookstore.backend.Models.Book;
 import com.bookstore.backend.Models.Cart;
 import com.bookstore.backend.Models.CartItem;
@@ -108,6 +110,24 @@ public class CartService {
         if (!item.getCart().getId().equals(cart.getId())) {
             throw new RuntimeException("Access denied");
         }
+    }
+
+    public CartResponseDTO mapToDTO(Cart cart){
+
+        return CartResponseDTO.builder()
+                .id(cart.getId())
+                .items(
+                        cart.getItems().stream()
+                                .map(cartItem -> CartItemDTO.builder()
+                                        .id(cartItem.getId())
+                                        .bookId(cartItem.getBook().getId())
+                                        .title(cartItem.getBook().getTitle())
+                                        .price(cartItem.getBook().getPrice())
+                                        .quantity(cartItem.getQuantity())
+                                        .build())
+                                .toList()
+                )
+                .build();
     }
 
 }
