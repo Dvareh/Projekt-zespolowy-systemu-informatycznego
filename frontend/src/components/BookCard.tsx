@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useAppDispatch } from '@/store';
+import { addToCart } from '@/store/slices/cartSlice';
 
 const Card = styled.div`
   background: #fff;
@@ -103,6 +105,7 @@ interface Props {
 
 export default function BookCard({ id, title, author, price, genres, coverUrl }: Props) {
   const [imgFailed, setImgFailed] = useState(false);
+  const dispatch = useAppDispatch();
 
   const content = (
     <Card>
@@ -117,7 +120,16 @@ export default function BookCard({ id, title, author, price, genres, coverUrl }:
         {genres && genres.length > 0 && <Genre>{genres.join(', ')}</Genre>}
         <Bottom>
           <Price>{price} zł</Price>
-          <CartButton onClick={(e) => e.preventDefault()}>🛒</CartButton>
+          <CartButton
+            onClick={(e) => {
+              e.preventDefault();
+              if (id !== undefined) {
+                dispatch(addToCart({ id, title, author, price, coverUrl }));
+              }
+            }}
+          >
+            🛒
+          </CartButton>
         </Bottom>
       </Info>
     </Card>
