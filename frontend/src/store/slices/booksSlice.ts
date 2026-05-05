@@ -13,6 +13,7 @@ export interface Book {
   coverUrl?: string;
   isbn?: string;
   stockQuantity?: number;
+  rating?: number;
 }
 
 interface BooksState {

@@ -112,6 +112,9 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { token, user, initializing } = useAppSelector((s) => s.auth);
+  const cartCount = useAppSelector((s) =>
+    s.cart.items.reduce((sum, i) => sum + i.quantity, 0)
+  );
 
   const handleLogout = () => {
     dispatch(logout());
@@ -130,7 +133,7 @@ export default function Navbar() {
             <>
               <CartBtn>
                 <Image src="/shopping-bag.png" width={22} height={22} alt="cart" />
-                <CartBadge>0</CartBadge>
+                {cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}
               </CartBtn>
               <UserChipLink href="/profile">
                 <Image src="/person.png" width={20} height={20} alt="avatar" />
