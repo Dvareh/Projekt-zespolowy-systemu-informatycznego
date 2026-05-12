@@ -21,6 +21,30 @@
   
     frontend/ – część frontendowa aplikacji
 
+## Application start
+### Backend setup (Spring Boot)
+    1. Go to backend folder:
+        cd backend
+    2. Configure your database - update application.properties
+    3. Run backend:
+        ./mvnw spring-boot:run
+        or
+        mvn spring-boot:run
+    Backend will start on:
+        http://localhost:8080
+### Frontend setup (Next.js + TypeScript)
+    1. Go to frontend folder:
+        cd frontend
+    2. Install dependencies:
+        nmp install
+    3. Run frontend:
+        nmp run dev
+    Frontend will start on:
+        http://localhost:3000
+    4. Create .env file:
+        NEXT_PUBLIC_API_URL=http://localhost:8080
+
+
 ## Sprint Plan
 ### Sprint 1 (Week 1–2)
   Sprint goal: Set up project architecture and implement basic book catalog functionality.
@@ -188,7 +212,7 @@
             Shopping cart (add, remove, update quantity)
             Place orders
             Order history
-
+            
 ## Authors
   Artiom Prilepschi
   
