@@ -1,50 +1,6 @@
 # Online Bookstore Application (English version)
     An online application for browsing and ordering books.
-
-## Technology stack
-    Frontend: 
-        Next.js
-        TypeScript
-  
-    Backend: 
-        Spring Boot
-        Spring Data JPA
-        Lombok
-        Spring Security + JWT
-        Swagger / Springdoc OpenAPI
-        Logback
-  
-    Database: PostgreSQL
-
-## Project Structure
-    backend/ – część backendowa aplikacji
-  
-    frontend/ – część frontendowa aplikacji
-
-## Application start
-### Backend setup (Spring Boot)
-    1. Go to backend folder:
-        cd backend
-    2. Configure your database - update application.properties
-    3. Run backend:
-        ./mvnw spring-boot:run
-        or
-        mvn spring-boot:run
-    Backend will start on:
-        http://localhost:8080
-### Frontend setup (Next.js + TypeScript)
-    1. Go to frontend folder:
-        cd frontend
-    2. Install dependencies:
-        nmp install
-    3. Run frontend:
-        nmp run dev
-    Frontend will start on:
-        http://localhost:3000
-    4. Create .env file:
-        NEXT_PUBLIC_API_URL=http://localhost:8080
-
-
+    
 ## Sprint Plan
 ### Sprint 1 (Week 1–2)
   Sprint goal: Set up project architecture and implement basic book catalog functionality.
@@ -71,7 +27,7 @@
         Display books on main page
         Implement pagination
 ### Sprint 2 (Week 3-4)
-  Spring goal: Implement user authentication and management system
+  Sprint goal: Implement user authentication and management system
   #### Backend:
     Create User entity
     Implement UserRepository
@@ -214,16 +170,12 @@
             Order history
             
 ## Authors
-  Artiom Prilepschi
-  
-  Nazar Pavlenko
+    Artiom Prilepschi - Backend developer
+      
+    Nazar Pavlenko - Frontend developer
 
--------------------------------------------------------
 
-# Aplikacja internetowa księgarni (Polska wersja)
-    Aplikacja internetowa służąca do przeglądania i zamawiania książek online.
-
-## Stos Technologii
+## Technologies
     Frontend: 
         Next.js
         TypeScript
@@ -238,174 +190,186 @@
   
     Database: PostgreSQL
 
-## Struktura Projektu
-    backend/ – część backendowa aplikacji
-  
-    frontend/ – część frontendowa aplikacji
+## Functionalities
+    Browse books
+    Search and filter books
+    View book details
+    User authentication (login/register)
+    Add books to cart
+    Place orders
+    Admin panel (manage books and orders)
 
-## Sprint Plan
-### Sprint 1 (Tydzień 1–2)
-  Cel sprintu: Przygotowanie architektury projektu oraz implementacja podstawowej funkcjonalności katalogu książek.
-  #### Backend:
-    Inicjalizacja projektu backend
-    Konfiguracja połączenia z bazą danych PostgreSQL
-    Utworzenie encji Book
-    Implementacja BookRepository
-    Implementacja BookService
-    Implementacja BookController z endpointami:
-        GET /books/get
-        GET /books/get/{id}
-        POST /books/add
-        PUT /books/update/{id}
-        DELETE /books/delete/{id}
-        GET /books/get/page?page=x&size=x
-  #### Frontend:
-    Inicjalizacja projektu frontend
-    Konfiguracja struktury katalogów projektu
-    Przygotowanie makiet UI w Figma
-    Tworzenie strony głównej aplikacji
-    Integracja API:
-        Pobieranie listy książek z backendu
-        Wyświetlanie książek na stronie głównej
-        Obsługa paginacji
-### Sprint 2 (Tydzień 3-4)
-  Cel sprintu: Implementacja systemu użytkowników (rejestracja i logowanie).
-  #### Backend:
-    Utworzenie encji User
-    Implementacja UserRepository
-    Implementacja UserService
-    Implementacja DTO(Data Transfer Object):
-        RegisterRequest
-        LoginRequest
-        UserDTO
-    Implementacja AuthController z endpointami:
-        POST auth/register
-        POST auth/login   
-    Implementacja UserController: z endpointami
-        GET users/get
-        GET users/get/{id}
-        PUT users/update/{id}
-        DELETE users/delete/{id}
-    Bezpieczeństwo:
-        Implementacja szyfrowania haseł (BCrypt)
-        Implementacja JWT
-        Konfiguracja Spring Security
-    Tworzenie ról:
-        ROLE_USER
-        ROLE_ADMIN
-  #### Frontend:
-    Tworzenie stron:
-        LoginPage
-        RegisterPage
-        ProfilePage
-    Integracja z API logowania i rejestracji
-    Funkcjonalności:
-        Logowanie / rejestracja  
-        Zapisywanie tokenu JWT  
-        Edycja profilu  
-        Usuwanie konta  
-### Sprint 3 (Tydzień 5–6)
-  Cel sprintu: Rozbudowa katalogu książek oraz implementacja gatunków, wyszukiwania, paginacji i okładek.
-  #### Backend:
-    Implementacja encji Genre
-    Aktualizacja encji Book (relacja ManyToMany z Genre)
-    Rozszerzenie encji Book o pole coverUrl
-    Tworzenie tabeli book_genres  
-    Implementacja GenreRepository
-    Implementacja GenreService
-    Implementacja DTO:
-        BookResponse
-        BookSearchRequest
-        GenreDTO
-    Implementacja GenreController z endpointami:
-        GET    /genres/get  
-        POST   /genres/add  
-        PUT    /genres/update/{id}  
-        DELETE /genres/delete/{id}
-    Rozszerzenie BookController o endpointy:
-        GET /books/get/title?value=&page=x&size=x
-        GET /books/get/author?value=&page=x&size=x
-        GET /books/get/genre/{id}?page=x&size=x
-        GET /books/get/search?title=x&author=x&genre=x&page=x&size=x
-        GET /books/get/page?page=x&size=x&sort=title,asc
-    Funkcjonalności:
-        Filtrowanie książek po gatunku
-        Wyszukiwanie książek (po title i author)
-        Możliwość łączenia filtrów (search endpoint)
-        Sortowanie książek
-  #### Frontend:
-    Tworzenie stron:
-        BookDetailsPage  
-
-    Funkcjonalności:
-        Filtrowanie po gatunku  
-        Wyszukiwanie książek  
-        Wyświetlanie szczegółów książki  
-        Pobieranie okładek książek na podstawie ISBN lub tytułu
-
-### Sprint 4 (Tydzień 7-8)
-  Cel sprintu: Implementacja koszyka, zamówień oraz panelu administratora.
-  #### Backend:
-    Implementacja encji:
-          Cart
-          CartItem
-          Order
-          OrderItem
-    Implementacja CartRepository
-    Implementacja CartService
-    Implementacja CartController z endpointami:
-        GET    /cart/get
-        POST   /cart/add
-        PUT    /cart/update
-        DELETE /cart/delete/{id}
-    Implementacja OrderRepository
-    Implementacja OrderService
-    Implementacja OrderController z endpointami:
-        POST /orders/add
-        GET  /orders/get
-        GET  /orders/get/{id}
+## Architecture
+    The application follows a client-server architecture:
+        Frontend: Next.js (UI layer)
+        Backend: Spring Boot (REST API)
+        Database: PostgreSQL
+        
+    Communication via REST API using JSON.
     
-    Implementacja kontrolerów administratora:
-        AdminOrderController:
-            GET /admin/orders/get
-            PUT /admin/orders/update/{id}
-        AdminBookController:
-            POST   /admin/books/add
-            PUT    /admin/books/update/{id}
-            DELETE /admin/books/delete/{id}
-            
-    Ograniczenie dostępu do metod POST/PUT/DELETE w BookController (ROLE_ADMIN)
-    Logika magazynu:
-        Sprawdzanie stockQuantity przed dodaniem do koszyka  
-        Aktualizacja stockQuantity po zamówieniu  
-        Blokada zakupu przy braku dostępności  
-
-    Bezpieczeństwo:
-        Użytkownik ma dostęp tylko do swoich zamówień
-        Ograniczenie dostępu do /admin/** (ROLE_ADMIN)
-  #### Frontend:
-    Tworzenie stron:
-        CartPage  
-        CheckoutPage  
-        OrdersPage  
-        AdminPanelPage 
-    Admin Panel (ROLE_ADMIN):
-        Lista książek  
-        Dodawanie książek  
-        Edycja książek  
-        Usuwanie książek  
-        Zarządzanie zamówieniami (zmiana statusu)  
-
-    Funkcjonalności:
-        Koszyk (dodawanie, usuwanie, zmiana ilości)  
-        Składanie zamówienia  
-        Historia zamówień 
+## Installation
+### Backend
+    cd backend
+    Configure application.properties
+    mvn clean install
     
-    
+### Frontend
+    cd frontend
+    npm install
+
+## Run Application
+### Backend
+    mvn spring-boot:run
+    http://localhost:8080
+
+### Frontend
+    npm run dev
+    http://localhost:3000
+
+## User Guide
+    1. Register or login
+    2. Browse books
+    3. Use search and filters
+    4. Add books to cart
+    5. Place an order
+    6. (Admin) Manage books and orders
+
+## Project Structure
+    /backend - backend part of the project
+    /frontend - frontend part of the project
+
+## API Documentation
+### Books API
+Endpoints for managing and searching books.
+
+**GET** `/books/search`  
+Flexible book search (filters, pagination, sorting)
+
+**GET** `/books/get/{id}`  
+  Get book by ID
 
 
+---
 
-## Autorzy
-  Artiom Prilepschi
-  
-  Nazar Pavlenko
+### Cart API
+Shopping cart operations.
+
+**GET** `/cart/get`  
+Get current user's cart
+
+**POST** `/cart/add`  
+Add item to cart
+
+**PUT** `/cart/update`  
+Update cart item (quantity, etc.)
+
+**DELETE** `/cart/delete/{id}`  
+Remove item from cart
+
+
+---
+
+### Orders API
+User order management.
+
+**POST** `/orders/add`  
+Create a new order
+
+**GET** `/orders/get`  
+Get all user orders
+
+**GET** `/orders/get/{id}`  
+Get order by ID
+
+
+---
+
+### User API
+Endpoints for managing current user profile.
+
+**GET** `/user/me/get`  
+Get current user's profile
+
+**PUT** `/user/me/update`  
+Update current user's profile
+
+
+---
+
+### Authentication API
+User authentication.
+
+**POST** `/auth/register`  
+Register a new user
+
+**POST** `/auth/login`  
+Login user
+
+
+---
+
+### Genre API
+Endpoints for genre management.
+
+**GET** `/genres/get`  
+Get all genres
+
+**GET** `/genres/get/{id}`  
+Get genre by ID
+
+**POST** `/genres/create`  
+Create new genre
+
+**PUT** `/genres/update/{id}`  
+Update genre by ID
+
+**DELETE** `/genres/delete/{id}`  
+Delete genre by ID
+
+
+---
+
+### Admin APIs
+
+#### Admin Book Controller
+**POST** `/admin/books/add`  
+Add new book
+
+**PUT** `/admin/books/update/{id}`  
+Update book by ID
+
+**DELETE** `/admin/books/delete/{id}`  
+Delete book by ID
+
+
+#### Admin Order Controller
+**GET** `/admin/orders/get`  
+Get all orders
+
+**PUT** `/admin/orders/update/{id}`  
+Update order status
+
+
+#### Admin User Controller
+**GET** `/admin/user/get`  
+Get all users
+
+**GET** `/admin/user/get/{id}`  
+Get user by ID
+
+**PUT** `/admin/user/update/{id}`  
+Update user by ID
+
+**DELETE** `/admin/user/delete/{id}`  
+Delete user by ID
+
+## Screenshots
+<img width="1920" height="1200" alt="изображение" src="https://github.com/user-attachments/assets/eeeeac9e-19ef-4192-8085-554b0d63e8c1" />
+<img width="1920" height="1200" alt="изображение" src="https://github.com/user-attachments/assets/90609cb8-85c2-41e6-9b41-0fb9f576fefb" />
+<img width="1920" height="1200" alt="изображение" src="https://github.com/user-attachments/assets/15382dd9-cece-478d-b2ca-782de573b10e" />
+<img width="1920" height="1200" alt="изображение" src="https://github.com/user-attachments/assets/6cd213c5-6206-469e-a07f-d1a525585b56" />
+<img width="1920" height="1200" alt="изображение" src="https://github.com/user-attachments/assets/31b06f75-db04-4e83-9866-92a0d2185b55" />
+<img width="1280" height="800" alt="изображение" src="https://github.com/user-attachments/assets/5ab98df8-2cee-42c7-80ff-952686faa470" />
+
+## Project Status
+    Project completed as part of the "Projekt Zespołowy Systemu Informatycznego 2026" course
